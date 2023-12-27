@@ -3,6 +3,7 @@ import request from "supertest";
 import { databaseTestConfig } from '../src/config/database/database.config';
 import { app, closeServer } from '../src/app';
 import { HTTP_Codes } from '../src/repository/httpCodes';
+import { ERROR } from '../src/repository/errors';
 
 describe('user', () => {
     beforeAll(() => {
@@ -30,6 +31,19 @@ describe('user', () => {
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.NOT_FOUND);
+    });
+
+    test('user bad request', async () => {
+        const testData = {
+            email: 'test_nfpluto.com'
+        };
+
+        const response = await request(app)
+            .post('/api/user/getbyemail')
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
+        expect(response.text).toBe(ERROR.INVALID_EMAIL);
     });
 
     afterAll(async () => {
