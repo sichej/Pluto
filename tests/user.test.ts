@@ -20,9 +20,21 @@ describe('user', () => {
         expect(response.status).toBe(HTTP_Codes.OK);
     });
 
+    test('user not found', async () => {
+        const testData = {
+            email: 'test_nf@pluto.com'
+        };
+
+        const response = await request(app)
+            .post('/api/user/getbyemail')
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.NOT_FOUND);
+    });
+
     afterAll(async () => {
         databaseTestConfig.end();
         closeServer();
-        await new Promise(res => setTimeout(res, 1000));
+        //await new Promise(res => setTimeout(res, 10));
     });
 });
