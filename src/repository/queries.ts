@@ -13,3 +13,9 @@ FROM
     Users
 WHERE
     email = ? and password = ?`
+
+export const REGISTER_USER = `
+INSERT INTO
+    Users (email, name, password)
+VALUES
+    (?, ?, ?)`

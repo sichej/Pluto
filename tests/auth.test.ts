@@ -52,6 +52,36 @@ describe('auth', () => {
         expect(response.text).toBe(ERROR.BODY_ERROR);
     });
 
+    test('correct registration', async () => {
+        const testData = {
+            email: 'new_user@pluto.com',
+            name: 'Test',
+            password: 'x'
+        };
+
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.OK);
+        expect(response.header).toHaveProperty('authorization');
+        const authHeader = response.header['authorization'];
+        expect(authHeader.startsWith('Bearer ')).toBe(true);
+    });
+
+    test('user already exists registration', async () => {
+        const testData = {
+            email: 'test@pluto.com',
+            password: 'x'
+        };
+
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.FOUND);
+    });
+
     afterAll(async () => {
         databaseTestConfig.end();
         closeServer();
