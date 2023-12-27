@@ -4,6 +4,6 @@ import { checkEmailMiddleware } from '../../controllers/middlewares/user.middlew
 
 const userRouter = express.Router();
 
-userRouter.post('/getbyemail', checkEmailMiddleware ,getUserByEmailController);
+userRouter.post('/getbyemail', checkEmailMiddleware, getUserByEmailController);
 
 export default userRouter;

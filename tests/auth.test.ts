@@ -5,7 +5,7 @@ import { app, closeServer } from '../src/app';
 import { HTTP_Codes } from '../src/repository/httpCodes';
 import { ERROR } from '../src/repository/errors';
 
-describe('user', () => {
+describe('auth', () => {
     beforeAll(() => {
     });
 
@@ -25,7 +25,7 @@ describe('user', () => {
         expect(authHeader.startsWith('Bearer ')).toBe(true);
     });
 
-    test('correct login', async () => {
+    test('missing user login', async () => {
         const testData = {
             email: 'test_nf@pluto.com',
             password: 'x'
@@ -37,6 +37,19 @@ describe('user', () => {
 
         expect(response.status).toBe(HTTP_Codes.NOT_FOUND);
         expect(response.header).not.toHaveProperty('authorization');
+    });
+
+    test('missing data login', async () => {
+        const testData = {
+            password: 'x'
+        };
+
+        const response = await request(app)
+            .post('/api/auth/login')
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
+        expect(response.text).toBe(ERROR.BODY_ERROR);
     });
 
     afterAll(async () => {
