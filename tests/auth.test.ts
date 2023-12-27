@@ -9,41 +9,34 @@ describe('user', () => {
     beforeAll(() => {
     });
 
-    test('get user by email', async () => {
+    test('correct login', async () => {
         const testData = {
-            email: 'test@pluto.com'
+            email: 'test@pluto.com',
+            password: 'x'
         };
 
         const response = await request(app)
-            .post('/api/user/getbyemail')
+            .post('/api/auth/login')
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.OK);
+        expect(response.header).toHaveProperty('authorization');
+        const authHeader = response.header['authorization'];
+        expect(authHeader.startsWith('Bearer ')).toBe(true);
     });
 
-    test('user not found', async () => {
+    test('correct login', async () => {
         const testData = {
-            email: 'test_nf@pluto.com'
+            email: 'test_nf@pluto.com',
+            password: 'x'
         };
 
         const response = await request(app)
-            .post('/api/user/getbyemail')
+            .post('/api/auth/login')
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.NOT_FOUND);
-    });
-
-    test('user bad request', async () => {
-        const testData = {
-            email: 'test_nfpluto.com'
-        };
-
-        const response = await request(app)
-            .post('/api/user/getbyemail')
-            .send(testData);
-
-        expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
-        expect(response.text).toBe(ERROR.INVALID_EMAIL);
+        expect(response.header).not.toHaveProperty('authorization');
     });
 
     afterAll(async () => {

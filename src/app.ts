@@ -1,5 +1,6 @@
 import express from 'express';
 import userRouter from './routers/user/user.router';
+import authRouter from './routers/auth/auth.router';
 
 
 const app = express();
@@ -11,6 +12,7 @@ const server = app.listen(port, () => {
 });
 
 app.use('/api/user', userRouter)
+app.use('/api/auth', authRouter)
 
 
 const closeServer = () => {

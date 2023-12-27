@@ -5,3 +5,11 @@ FROM
     Users
 WHERE
     email = ?`
+
+export const CHECK_LOGIN = `
+SELECT
+    email
+FROM
+    Users
+WHERE
+    email = ? and password = ?`

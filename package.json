@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "cross-env": "^7.0.3",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "nodemon": "^3.0.2",
     "supertest": "^6.3.3"
