@@ -17,4 +17,17 @@ const databaseTestConfig = mysql.createConnection({
     database: process.env.DB_NAME_TEST
 });
 
+export function queryDatabase(sql: string, values: any[]) {
+    const database = process.env.NODE_ENV === 'production' ? databaseConfig : databaseTestConfig;
+    return new Promise<any[]>((resolve, reject) => {
+        database.query(sql, values, (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
 export {databaseConfig, databaseTestConfig};
