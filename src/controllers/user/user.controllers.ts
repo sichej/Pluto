@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { getUserByEmail } from '../../services/user/user.services';
+import { findUserByEmail } from '../../services/user/user.services';
 import { HTTP_Codes } from '../../repository/httpCodes';
 
 export const getUserByEmailController = async (req: Request, res: Response): Promise<void> => {
     try {
       const email: string = req.body.email;
-      const user = await getUserByEmail(email.toLowerCase());
+      const user = await findUserByEmail(email);
       if (!user) {
         res.status(HTTP_Codes.NOT_FOUND).json({ message: 'User not found' });
         return;
