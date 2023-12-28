@@ -3,7 +3,10 @@ import request from "supertest";
 import { databaseTestConfig } from '../src/config/database/database.config';
 import { app, closeServer } from '../src/app';
 import { HTTP_Codes } from '../src/repository/httpCodes';
+import { signJWT } from '../src/services/auth/auth.services';
 
+
+const authToken = signJWT('test@pluto.com', 15);
 describe('category', () => {
     beforeAll(() => {
     });
@@ -12,6 +15,7 @@ describe('category', () => {
 
         const response = await request(app)
             .get('/api/category/getallcategory')
+            .set('Authorization', `Bearer ${authToken}`)
             .send();
 
         expect(response.status).toBe(HTTP_Codes.OK);
@@ -24,6 +28,7 @@ describe('category', () => {
 
         const response = await request(app)
             .post('/api/category/getcategorybyid')
+            .set('Authorization', `Bearer ${authToken}`)
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.OK);
@@ -36,6 +41,7 @@ describe('category', () => {
 
         const response = await request(app)
             .post('/api/category/getcategorybyid')
+            .set('Authorization', `Bearer ${authToken}`)
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.NOT_FOUND);
@@ -48,6 +54,7 @@ describe('category', () => {
 
         const response = await request(app)
             .post('/api/category/getcategorydetailsbyidcategory')
+            .set('Authorization', `Bearer ${authToken}`)
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.OK);
@@ -60,6 +67,7 @@ describe('category', () => {
 
         const response = await request(app)
             .post('/api/category/getcategorydetailsbyidcategory')
+            .set('Authorization', `Bearer ${authToken}`)
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.NOT_FOUND);

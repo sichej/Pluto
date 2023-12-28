@@ -55,7 +55,7 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
         (req as any).user = decoded;
         next();
     } catch (error) {
-        res.status(HTTP_Codes.UNAUTHORIZED).json({ message: 'Unauthorized - Invalid token' });
+        res.status(HTTP_Codes.BAD_REQUEST).json({ message: 'Bad request' });
         return;
     }
 }
