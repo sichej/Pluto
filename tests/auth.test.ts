@@ -72,6 +72,7 @@ describe('auth', () => {
     test('user already exists registration', async () => {
         const testData = {
             email: 'test@pluto.com',
+            name: 'test',
             password: 'x'
         };
 
@@ -80,6 +81,20 @@ describe('auth', () => {
             .send(testData);
 
         expect(response.status).toBe(HTTP_Codes.FOUND);
+    });
+
+    test('missing field registration', async () => {
+        const testData = {
+            email: 'test@pluto.com',
+            name: 'test'
+        };
+
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
+        expect(response.text).toBe(ERROR.BODY_ERROR);
     });
 
     afterAll(async () => {
