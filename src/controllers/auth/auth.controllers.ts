@@ -17,7 +17,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.header('Authorization', `Bearer ${token}`);
       res.status(HTTP_Codes.OK).send();
     } catch (error) {
-      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
 };
 
@@ -28,17 +28,17 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const password: string = sha512(req.body.password).toString();
     const user = await findUserByEmail(email);
     if (user) {
-      res.status(HTTP_Codes.FOUND).json({ message: 'Email already registered' });
+      res.status(HTTP_Codes.FOUND).send({ message: 'Email already registered' });
       return;
     }
     const result = createUser(email, name, password);
     if (!result) {
-      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).json({ message: 'Internal error' });
+      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ message: 'Internal error' });
       return;
     }
     const newUser = await findUserByEmail(email);
     if (!newUser) {
-      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).json({ message: 'Internal error' });
+      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ message: 'Internal error' });
       return;
     }
     const userCreated = await getUserByEmail(email);
@@ -47,6 +47,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.header('Authorization', `Bearer ${token}`);
     res.status(HTTP_Codes.OK).send();
   } catch (error) {
-    res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
   }
+};
+
+export const logout = async (req: Request, res: Response): Promise<void> => {
+  res.removeHeader('Authorization');
+  res.status(HTTP_Codes.OK).send()
 };

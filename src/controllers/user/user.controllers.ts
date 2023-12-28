@@ -7,11 +7,11 @@ export const getUserByEmailController = async (req: Request, res: Response): Pro
       const email: string = req.body.email;
       const user = await findUserByEmail(email);
       if (!user) {
-        res.status(HTTP_Codes.NOT_FOUND).json({ message: 'User not found' });
+        res.status(HTTP_Codes.NOT_FOUND).send({ message: 'User not found' });
         return;
       }
       res.status(HTTP_Codes.OK).send(user);
     } catch (error) {
-      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+      res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
 };
