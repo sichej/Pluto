@@ -3,6 +3,7 @@ import userRouter from './routers/user/user.router';
 import authRouter from './routers/auth/auth.router';
 import categoryRouter from './routers/category/category.router';
 import { authMiddleware } from './controllers/middlewares/auth.middleware';
+import expenseRouter from './routers/expense/expense.router';
 
 
 const app = express();
@@ -16,6 +17,7 @@ const server = app.listen(port, () => {
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/category', authMiddleware, categoryRouter)
+app.use('/api/expense', authMiddleware, expenseRouter)
 
 
 const closeServer = () => {
