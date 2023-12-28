@@ -19,3 +19,22 @@ INSERT INTO
     Users (email, name, password)
 VALUES
     (?, ?, ?)`
+export const GET_CATEGORIES = `
+SELECT
+    id, name
+FROM
+    Categories`
+export const GET_CATEGORY_BY_ID = `
+SELECT
+    id, name
+FROM
+    Categories
+WHERE
+    id = ?`
+export const GET_CATEGORY_DETAILS_BY_ID_CATEGORY = `
+SELECT
+    id, idCategory, details, additionalDetails
+FROM
+    CategoriesDetails
+WHERE
+    idCategory = ?`
