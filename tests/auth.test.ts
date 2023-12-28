@@ -97,6 +97,19 @@ describe('auth', () => {
         expect(response.text).toBe(ERROR.BODY_ERROR);
     });
 
+    test('logout', async () => {
+        const authToken = 'fake_token'; 
+    
+        const response = await request(app)
+            .get('/api/auth/logout')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send();
+    
+        expect(response.status).toBe(HTTP_Codes.OK);
+        expect(response.header).not.toHaveProperty('authorization');
+    });
+    
+
     afterAll(async () => {
         databaseTestConfig.end();
         closeServer();
