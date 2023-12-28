@@ -2,6 +2,7 @@ import express from 'express';
 import userRouter from './routers/user/user.router';
 import authRouter from './routers/auth/auth.router';
 import categoryRouter from './routers/category/category.router';
+import { authMiddleware } from './controllers/middlewares/auth.middleware';
 
 
 const app = express();
@@ -14,7 +15,7 @@ const server = app.listen(port, () => {
 
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
-app.use('/api/category', categoryRouter)
+app.use('/api/category', authMiddleware, categoryRouter)
 
 
 const closeServer = () => {

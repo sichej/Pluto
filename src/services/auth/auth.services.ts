@@ -8,3 +8,12 @@ export const signJWT = (email: string, time: number) => {
 
     return token;
 }
+
+export const verifyJWT = (JWTtoken: string) => {
+  try {
+    const decoded = jwt.verify(JWTtoken, process.env.JWT_SECRET);
+    return decoded;
+  } catch (err) {
+    return null;
+  }
+}
