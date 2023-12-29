@@ -6,10 +6,10 @@ export const newExpenseController = async (req: Request, res: Response): Promise
     try {
         const value: number = req.body.value;
         const date: string = req.body.date;
-        const name: string = req.body.name || null;
-        const details: string = req.body.details || null;
-        const idCategory: number = req.body.idCategory || null;
-        const idCategoryDetail: number = req.body.idCategoryDetail || null;
+        const name: string | null = req.body.name || null;
+        const details: string | null = req.body.details || null;
+        const idCategory: number = req.body.idCategory;
+        const idCategoryDetail: number | null = req.body.idCategoryDetail || null;
 
         const idExpense = await createExpense(value, date);
         if (!idExpense) {

@@ -26,8 +26,59 @@ describe('expense', () => {
             .set('Authorization', `Bearer ${authToken}`)
             .send(testData);
 
-        console.log(response.text);
         expect(response.status).toBe(HTTP_Codes.OK);
+    });
+
+    test('correct new expense', async () => {
+        const testData = {
+            value: 25,
+            date: '2023-12-28',
+            name: 'grocery',
+            details: 'pandoro, wine',
+            idCategory: 1
+        };
+
+        const response = await request(app)
+            .post('/api/expense/newexpense')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.OK);
+    });
+
+    test('wrong new expense - wrong input type', async () => {
+        const testData = {
+            value: 25,
+            date: 2023-12-28,
+            name: 'grocery',
+            details: 'pandoro, wine',
+            idCategory: 1,
+            idCategoryDetail: 3
+        };
+
+        const response = await request(app)
+            .post('/api/expense/newexpense')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
+    });
+
+    test('wrong new expense - missing field', async () => {
+        const testData = {
+            value: 25,
+            date: '2023-12-28',
+            name: 'grocery',
+            details: 'pandoro, wine',
+            idCategoryDetail: 3
+        };
+
+        const response = await request(app)
+            .post('/api/expense/newexpense')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send(testData);
+
+        expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
     });
 
     afterAll(async () => {

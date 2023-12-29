@@ -9,12 +9,11 @@ export const createExpense = async (value: number, date: string) => {
         }
         return false;
     } catch (err) {
-        console.log('error')
         return false;
     }
 }
 
-export const addExpenseDetails = async (idExpense: number, name: string | null, details: string, idCategory: number | null, idCategoryDetail: number | null) => {
+export const addExpenseDetails = async (idExpense: number, name: string | null, details: string | null, idCategory: number | null, idCategoryDetail: number | null) => {
     try {
         const idExpenseDetail: any = await queryDatabase(NEW_EXPENSE_DETAILS, [idExpense, name, details, idCategory, idCategoryDetail]);
         if (idExpenseDetail.insertId) {
