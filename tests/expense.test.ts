@@ -29,7 +29,7 @@ describe('expense', () => {
         expect(response.status).toBe(HTTP_Codes.OK);
     });
 
-    test('correct new expense', async () => {
+    test('new expense - no idCategoryDetail', async () => {
         const testData = {
             value: 25,
             date: '2023-12-28',
