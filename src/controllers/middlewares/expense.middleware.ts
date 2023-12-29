@@ -6,7 +6,7 @@ export async function newExpenseMiddleware(req: Request, res: Response, next: Ne
     if (!req.body.value || typeof req.body.value !== 'number' || req.body.value < 0) {
         return res.status(HTTP_Codes.BAD_REQUEST).send(ERROR.BODY_ERROR)
     }
-    if (!req.body.date || typeof req.body.date !== 'string' || req.body.datelength !== 10) {
+    if (!req.body.date || typeof req.body.date !== 'string' || req.body.date.length !== 10) {
         return res.status(HTTP_Codes.BAD_REQUEST).send(ERROR.BODY_ERROR)
     }
     if (req.body.name && typeof req.body.name !== 'string') {
