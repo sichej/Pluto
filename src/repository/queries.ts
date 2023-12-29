@@ -59,3 +59,14 @@ INSERT INTO
     UserExpense (idExpense, emailUser)
 VALUES
     (?, ?)`
+
+export const TIME_REPORT = `
+SELECT
+    SUM(Expenses.value) as total
+FROM
+    Expenses
+INNER JOIN UserExpense ON Expenses.id = UserExpense.idExpense
+WHERE
+    UserExpense.emailUser = ?
+AND Expenses.date >= ?
+AND Expenses.date <= ?`
