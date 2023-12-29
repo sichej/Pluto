@@ -70,3 +70,16 @@ WHERE
     UserExpense.emailUser = ?
 AND Expenses.date >= ?
 AND Expenses.date <= ?`
+
+export const TIME_CATEGORY_REPORT = `
+SELECT
+    SUM(Expenses.value) as total
+FROM
+    Expenses
+INNER JOIN UserExpense ON Expenses.id = UserExpense.idExpense
+INNER JOIN ExpensesDetails ON Expenses.id = ExpensesDetails.idExpense
+WHERE
+    UserExpense.emailUser = ?
+AND Expenses.date >= ?
+AND Expenses.date <= ?
+AND ExpensesDetails.idCategory = ?`
