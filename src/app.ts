@@ -15,11 +15,11 @@ const server = app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`);
 });
 
-app.use('/api/user', userRouter)
-app.use('/api/auth', authRouter)
-app.use('/api/category', authMiddleware, categoryRouter)
-app.use('/api/expense', authMiddleware, expenseRouter)
-app.use('/api/report', authMiddleware, reportRouter)
+app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/category', authMiddleware, categoryRouter);
+app.use('/api/expense', authMiddleware, expenseRouter);
+app.use('/api/report', authMiddleware, reportRouter);
 
 
 const closeServer = () => {
