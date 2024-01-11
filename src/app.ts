@@ -16,7 +16,7 @@ const server = app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`);
 });
 
-app.use('api/status', statusRouter)
+app.use('/api/status', statusRouter)
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/category', authMiddleware, categoryRouter);
