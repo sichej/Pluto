@@ -1,44 +1,53 @@
-import { queryDatabase } from "../../config/database/database.config";
-import { CHECK_LOGIN, GET_USER_BY_EMAIL, REGISTER_USER } from "../../repository/queries";
+import User from '../../models/user/user.model';
 
-export const findUserByEmail = async (email:string) => {
-    try {
-        const user = await queryDatabase(GET_USER_BY_EMAIL, [email.toLowerCase()]);
-        if (user.length === 1) {
-            return true;
+class UserService {
+    static async createUser(email: string, name: string, password: string): Promise<User> {
+        try {
+            const newUser = await User.create({ email, name, password });
+            return newUser;
+        } catch (error) {
+            throw new Error(`Failed to create user: ${error.message}`);
         }
-    } catch (err) {
-        return false;
     }
-}
 
-export const getUserByEmail = async (email:string) => {
-    try {
-        const user = await queryDatabase(GET_USER_BY_EMAIL, [email.toLowerCase()]);
-        if (user.length === 1) {
-            return user[0];
+    static async getAllUsers(): Promise<User[]> {
+        try {
+            const users = await User.findAll();
+            return users;
+        } catch (error) {
+            throw new Error(`Failed to retrieve users: ${error.message}`);
         }
-    } catch (err) {
-        return false;
     }
-}
 
-export const getUserWithEmailAndPassword = async (email:string, password: string) => {
-    try {
-        const user = await queryDatabase(CHECK_LOGIN, [email.toLowerCase(), password]);
-        if (user.length === 1) {
-            return user[0];
+    static async getUserByEmail(email: string): Promise<User | null> {
+        try {
+            const user = await User.findByPk(email);
+            return user;
+        } catch (error) {
+            throw new Error(`Failed to retrieve user: ${error.message}`);
         }
-    } catch (err) {
-        return false;
+    }
+
+    static async updateUserByEmail(email: string, newData: { name?: string; password?: string }): Promise<[number, User[]]> {
+        try {
+            const [rowsUpdated, updatedUsers] = await User.update(newData, {
+                where: { email },
+                returning: true,
+            });
+            return [rowsUpdated, updatedUsers];
+        } catch (error) {
+            throw new Error(`Failed to update user: ${error.message}`);
+        }
+    }
+
+    static async deleteUserByEmail(email: string): Promise<number> {
+        try {
+            const rowsDeleted = await User.destroy({ where: { email } });
+            return rowsDeleted;
+        } catch (error) {
+            throw new Error(`Failed to delete user: ${error.message}`);
+        }
     }
 }
 
-export const createUser = async (email:string, name: string, password: string) => {
-    try {
-        await queryDatabase(REGISTER_USER, [email.toLowerCase(), name, password]);
-        return true;
-    } catch (err) {
-        return false;
-    }
-}
+export default UserService;

@@ -1,11 +1,11 @@
 import express from 'express';
-import { getAllCategoryController, getCategoryByIdController, getCategoryDetailsByIdCategoryController } from '../../controllers/category/category.controllers';
 import { categoryDetailsMiddleware, categoryMiddleware } from '../../controllers/middlewares/category.middleware';
+import { getAllCategories, getCategoryById, getCategoryDetailsByIdCategory } from '../../controllers/category/category.controllers';
 
 const categoryRouter = express.Router();
 
-categoryRouter.get('/getallcategory', getAllCategoryController);
-categoryRouter.post('/getcategorybyid', categoryMiddleware, getCategoryByIdController);
-categoryRouter.post('/getcategorydetailsbyidcategory', categoryDetailsMiddleware, getCategoryDetailsByIdCategoryController);
+categoryRouter.get('/getallcategory', getAllCategories);
+categoryRouter.post('/getcategorybyid', categoryMiddleware, getCategoryById);
+categoryRouter.post('/getcategorydetailsbyidcategory', categoryDetailsMiddleware, getCategoryDetailsByIdCategory);
 
 export default categoryRouter;

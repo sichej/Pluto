@@ -17,11 +17,11 @@ const server = app.listen(port, () => {
 });
 
 app.use('/api/status', statusRouter)
-app.use('/api/user', userRouter);
+//app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/category', authMiddleware, categoryRouter);
 app.use('/api/expense', authMiddleware, expenseRouter);
-app.use('/api/report', authMiddleware, reportRouter);
+// app.use('/api/report', authMiddleware, reportRouter);
 
 
 const closeServer = () => {
