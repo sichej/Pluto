@@ -111,7 +111,6 @@ describe('auth', () => {
     
 
     afterAll(async () => {
-        //databaseTestConfig.end();
         sequelize.close()
         closeServer();
     });
