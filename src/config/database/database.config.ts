@@ -10,7 +10,7 @@ const dbUser = isTestEnvironment ? process.env.DB_USER_TEST : process.env.DB_USE
 const dbPwd = isTestEnvironment ? process.env.DB_PWD_TEST : process.env.DB_PWD;
 const dbHost = isTestEnvironment ? process.env.DB_HOST_TEST : process.env.DB_HOST;
 
-const sequelize = new Sequelize(dbName, dbUser, dbPwd, {
+const sequelize = new Sequelize(dbName as string, dbUser as string, dbPwd, {
     host: dbHost,
     dialect: 'mariadb'
 });
