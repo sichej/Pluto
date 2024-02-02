@@ -1,33 +1,22 @@
 import { Request, Response } from 'express';
 import { HTTP_Codes } from '../../repository/httpCodes';
-import { timeCategoryReport, timeReport } from '../../services/report/report.services';
+import ReportService from '../../services/report/report.services';
 
-export const generateTimeReportController = async (req: Request, res: Response): Promise<void> => {
+export const createReport = async (req: Request, res: Response): Promise<void> => {
     try {
-        const from: string = req.body.from;
-        const to: string = req.body.to;
-        const total = await timeReport(from, to, (req as any).user.data);
-    if (!total) {
-        res.status(HTTP_Codes.BAD_REQUEST).send({ message: 'Error during report generation' });
-        return;
-    }
-        res.status(HTTP_Codes.OK).send(total);
-    } catch (error) {
-        res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
-    }
-};
+        const fromDate: string = req.body.fromDate;
+        const toDate: string = req.body.toDate;
+        const type: number | null = req.body.type;
+        const idCategory: number | null = req.body.idCategory || null;
 
-export const generateTimeCategoryReportController = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const from: string = req.body.from;
-        const to: string = req.body.to;
-        const idCategory: number = req.body.idCategory;
-        const total = await timeCategoryReport(from, to, idCategory, (req as any).user.data);
-    if (!total) {
-        res.status(HTTP_Codes.BAD_REQUEST).send({ message: 'Error during report generation' });
-        return;
-    }
-        res.status(HTTP_Codes.OK).send(total);
+        const amount = await ReportService.getGeneralAmountForReport((req as any).user.data, fromDate, toDate);
+        const report = await ReportService.createReport(fromDate, toDate, type, idCategory, amount);
+        if (!report.id) {
+            res.status(HTTP_Codes.CONFLICT).json({ message: 'Error while creating report' });
+            return;
+        }
+
+        res.status(HTTP_Codes.OK).send('Report created succesfully');
     } catch (error) {
         res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
