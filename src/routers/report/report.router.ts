@@ -1,10 +1,9 @@
 import express from 'express';
-import { generateTimeCategoryReportController, generateTimeReportController } from '../../controllers/report/report.controllers';
-import { timeCategoryReportMiddleware, timeReportMiddleware } from '../../controllers/middlewares/report.middleware';
+import { timeReportMiddleware } from '../../controllers/middlewares/report.middleware';
+import { createReport } from '../../controllers/report/report.controllers';
 
 const reportRouter = express.Router();
 
-reportRouter.post('/timereport', timeReportMiddleware, generateTimeReportController);
-reportRouter.post('/timecategoryreport', timeCategoryReportMiddleware, generateTimeCategoryReportController);
+reportRouter.post('/timereport', timeReportMiddleware, createReport);
 
 export default reportRouter;

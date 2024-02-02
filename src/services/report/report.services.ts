@@ -1,32 +1,52 @@
-import { queryDatabase } from "../../config/database/database.config";
-import { TIME_CATEGORY_REPORT, TIME_REPORT } from "../../repository/queries";
+import sequelize from '../../config/database/database.config';
+import Report from '../../models/report/report.model';
+import { TIME_AMOUNT_EXPENSE } from '../../repository/queries';
+import { QueryTypes } from "sequelize";
 
-export const timeReport = async (from: string, to: string, email: string) => {
-    try {
-        if (from > to) {
-            return false;
+
+interface SumExpenses {
+    total: number;
+}
+
+class ReportService {
+    static async createReport(fromDate: string, toDate: string, type: number, idCategory: number | null, amount: number): Promise<Report> {
+        try {
+            const newReport = await Report.create({ fromDate, toDate, type, idCategory, amount });
+            return newReport;
+        } catch (error) {
+            throw new Error(`Failed to create report: ${error.message}`);
         }
-        const totalExpense: any = await queryDatabase(TIME_REPORT, [email, from, to]);
-        if (!totalExpense) {
-            return false;
+    }
+
+
+    static async getReportById(id: number): Promise<Report | null> {
+        try {
+            const report = await Report.findByPk(id);
+            if (!report) {
+                return null;
+            }
+            return report;
+        } catch (error) {
+            throw new Error(`Failed to retrieve report: ${error.message}`);
         }
-        return totalExpense;
-    } catch (err) {
-        return false;
+    }
+
+    static async getGeneralAmountForReport(userEmail: string, fromDate: string, toDate: string): Promise<number> {
+        try {
+            const result = await sequelize.query(TIME_AMOUNT_EXPENSE,
+            {
+                replacements: { userEmail: userEmail, fromDate: fromDate, toDate: toDate },
+                type: QueryTypes.SELECT
+            });
+            if (!result.length) {
+                return 0;
+            }
+            return Number((result[0] as SumExpenses).total);
+        } catch (error) {
+            throw new Error(`Failed to retrieve report: ${error.message}`);
+        }
     }
 }
 
-export const timeCategoryReport = async (from: string, to: string, idCategory: number, email: string) => {
-    try {
-        if (from > to) {
-            return false;
-        }
-        const totalExpense: any = await queryDatabase(TIME_CATEGORY_REPORT, [email, from, to, idCategory]);
-        if (!totalExpense) {
-            return false;
-        }
-        return totalExpense;
-    } catch (err) {
-        return false;
-    }
-}
+export default ReportService;
+

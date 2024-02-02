@@ -1,22 +1,18 @@
-import { queryDatabase } from "../../config/database/database.config";
-import { GET_CATEGORY_BY_ID, GET_CATEGORY_DETAILS_BY_ID_CATEGORY } from "../../repository/queries";
+import CategoryDetail from "../../models/category/categoryDetail.model";
 
-type CategoryDetail = {
-    id: number,
-    idCategory: string,
-    details: string,
-    additionalDetails: string | null
-}
+class CategoryDetailService {
 
-export const getCategoryDetailsByIdCategory = async (idCategory: number): Promise<CategoryDetail[] | null> => {
-    try {
-        const categoriesDetails: CategoryDetail[] = await queryDatabase(GET_CATEGORY_DETAILS_BY_ID_CATEGORY, [idCategory]);
-        if (categoriesDetails.length > 0) {
-            return categoriesDetails;
-        } else {
-            return null;
+    static async getCategoryDetailsByIdCategory(idCategory: number): Promise<CategoryDetail[] | null> {
+        try {
+            const categoryDetails = await CategoryDetail.findAll({ where: {idCategory} });
+            if (!categoryDetails.length) {
+                return null;
+            }
+            return categoryDetails;
+        } catch (error) {
+            throw new Error(`Failed to retrieve category details: ${error.message}`);
         }
-    } catch (err) {
-        throw new Error("Failed to fetch categories details");
     }
 }
+
+export default CategoryDetailService;

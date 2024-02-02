@@ -1,9 +1,9 @@
 import {describe, expect, test} from '@jest/globals';
 import request from "supertest";
-import { databaseTestConfig } from '../src/config/database/database.config';
 import { app, closeServer } from '../src/app';
 import { HTTP_Codes } from '../src/repository/httpCodes';
 import { ERROR } from '../src/repository/errors';
+import sequelize from '../src/config/database/database.config';
 
 describe('auth', () => {
     beforeAll(() => {
@@ -111,7 +111,7 @@ describe('auth', () => {
     
 
     afterAll(async () => {
-        databaseTestConfig.end();
+        sequelize.close()
         closeServer();
     });
 });

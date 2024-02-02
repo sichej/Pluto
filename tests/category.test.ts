@@ -1,9 +1,9 @@
 import {describe, expect, test} from '@jest/globals';
 import request from "supertest";
-import { databaseTestConfig } from '../src/config/database/database.config';
 import { app, closeServer } from '../src/app';
 import { HTTP_Codes } from '../src/repository/httpCodes';
 import { signJWT } from '../src/services/auth/auth.services';
+import sequelize from '../src/config/database/database.config';
 
 
 const authToken = signJWT('test@pluto.com', 15);
@@ -74,7 +74,7 @@ describe('category', () => {
     });
 
     afterAll(async () => {
-        databaseTestConfig.end();
+        sequelize.close()
         closeServer();
     });
 });

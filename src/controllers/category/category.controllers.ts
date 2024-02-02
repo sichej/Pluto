@@ -1,13 +1,13 @@
-import { Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import { HTTP_Codes } from '../../repository/httpCodes';
-import { getAllCategories, getCategoryById } from '../../services/category/category.services';
-import { getCategoryDetailsByIdCategory } from '../../services/category/categoryDetail.service';
+import CategoryService from '../../services/category/category.service';
+import CategoryDetailService from '../../services/category/categoryDetail.service';
 
-export const getAllCategoryController = async (req: Request, res: Response): Promise<void> => {
+export const getAllCategories = async (req: Request, res: Response): Promise<void> => {
     try {
-        const categories = await getAllCategories();
+        const categories = await CategoryService.getAllCategories();
         if (!categories) {
-            res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send();
+            res.status(HTTP_Codes.NOT_FOUND).json({ message: 'Categories not found' });
             return;
         }
         res.status(HTTP_Codes.OK).send(categories);
@@ -16,12 +16,12 @@ export const getAllCategoryController = async (req: Request, res: Response): Pro
     }
 };
 
-export const getCategoryByIdController = async (req: Request, res: Response): Promise<void> => {
+export const getCategoryById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id: number = req.body.id;
-        const category = await getCategoryById(id);
+        const id = req.body.id;
+        const category = await CategoryService.getCategoryById(id);
         if (!category) {
-            res.status(HTTP_Codes.NOT_FOUND).send('Category not found');
+            res.status(HTTP_Codes.NOT_FOUND).json({ message: 'Category not found' });
             return;
         }
         res.status(HTTP_Codes.OK).send(category);
@@ -30,12 +30,12 @@ export const getCategoryByIdController = async (req: Request, res: Response): Pr
     }
 };
 
-export const getCategoryDetailsByIdCategoryController = async (req: Request, res: Response): Promise<void> => {
+export const getCategoryDetailsByIdCategory = async (req: Request, res: Response): Promise<void> => {
     try {
-        const idCategory: number = req.body.idCategory;
-        const categoryDetails = await getCategoryDetailsByIdCategory(idCategory);
+        const idCategory = req.body.idCategory;
+        const categoryDetails = await CategoryDetailService.getCategoryDetailsByIdCategory(idCategory);
         if (!categoryDetails) {
-            res.status(HTTP_Codes.NOT_FOUND).send('Category details not found');
+            res.status(HTTP_Codes.NOT_FOUND).json({ message: 'Category details not found' });
             return;
         }
         res.status(HTTP_Codes.OK).send(categoryDetails);

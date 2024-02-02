@@ -71,7 +71,19 @@ WHERE
 AND Expenses.date >= ?
 AND Expenses.date <= ?`
 
-export const TIME_CATEGORY_REPORT = `
+export const TIME_AMOUNT_EXPENSE = `
+SELECT
+    SUM(Expenses.value) as total
+FROM
+    Expenses
+INNER JOIN UserExpenses ON Expenses.id = UserExpenses.idExpense
+INNER JOIN ExpenseDetails ON Expenses.id = ExpenseDetails.idExpense
+WHERE
+    UserExpenses.userEmail = :userEmail
+AND Expenses.date >= :fromDate
+AND Expenses.date <= :toDate`
+
+export const TIME_AMOUNT_CATEGORY_EXPENSE = `
 SELECT
     SUM(Expenses.value) as total
 FROM
@@ -79,7 +91,7 @@ FROM
 INNER JOIN UserExpense ON Expenses.id = UserExpense.idExpense
 INNER JOIN ExpensesDetails ON Expenses.id = ExpensesDetails.idExpense
 WHERE
-    UserExpense.emailUser = ?
-AND Expenses.date >= ?
-AND Expenses.date <= ?
-AND ExpensesDetails.idCategory = ?`
+    UserExpense.userEmail = :userEmail
+AND Expenses.date >= :fromDate
+AND Expenses.date <= :toDate
+AND ExpensesDetails.idCategory = :idCategory`
