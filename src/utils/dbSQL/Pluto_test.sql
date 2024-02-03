@@ -288,21 +288,21 @@ ALTER TABLE `CategoryDetails`
 --
 ALTER TABLE `ExpenseDetails`
   ADD CONSTRAINT `expense-category` FOREIGN KEY (`idCategory`) REFERENCES `Categories` (`id`),
-  ADD CONSTRAINT `expense-categoryDetail` FOREIGN KEY (`idCategoryDetail`) REFERENCES `categorydetails` (`id`),
+  ADD CONSTRAINT `expense-categoryDetail` FOREIGN KEY (`idCategoryDetail`) REFERENCES `CategoryDetails` (`id`),
   ADD CONSTRAINT `expense-expenseDetail` FOREIGN KEY (`idExpense`) REFERENCES `Expenses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `Reports`
 --
 ALTER TABLE `Reports`
-  ADD CONSTRAINT `report-type` FOREIGN KEY (`type`) REFERENCES `reporttypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `report-type` FOREIGN KEY (`type`) REFERENCES `ReportTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `UserExpenses`
 --
 ALTER TABLE `UserExpenses`
   ADD CONSTRAINT `expense-user` FOREIGN KEY (`idExpense`) REFERENCES `Expenses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user-expense` FOREIGN KEY (`userEmail`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user-expense` FOREIGN KEY (`userEmail`) REFERENCES `Users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

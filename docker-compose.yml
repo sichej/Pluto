@@ -1,0 +1,25 @@
+version: "3.10"
+
+services:
+  backend:
+    build:
+      context: .
+    ports:
+      - "9091:9091"
+    depends_on:
+      - database 
+    environment:
+      MYSQL_HOST: database 
+      MYSQL_PORT: 3306 
+      MYSQL_USER: root 
+      MYSQL_PASSWORD: rootpassword 
+      MYSQL_DATABASE: Pluto_test 
+
+  database:
+    platform: linux/x86_64
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword 
+      MYSQL_DATABASE: Pluto_test 
+    volumes:
+      - ./src/utils/dbSQL:/docker-entrypoint-initdb.d 
