@@ -5,10 +5,10 @@ dotenv.config();
 
 const isTestEnvironment = process.env.NODE_ENV === 'test';
 
-const dbName = isTestEnvironment ? process.env.DB_NAME_TEST : process.env.DB_NAME;
-const dbUser = isTestEnvironment ? process.env.DB_USER_TEST : process.env.DB_USER;
-const dbPwd = isTestEnvironment ? process.env.DB_PWD_TEST : process.env.DB_PWD;
-const dbHost = isTestEnvironment ? process.env.DB_HOST_TEST : process.env.DB_HOST;
+const dbName = isTestEnvironment ? process.env.MYSQL_DATABASE_TEST : process.env.MYSQL_DATABASE;
+const dbUser = isTestEnvironment ? process.env.MYSQL_USER_TEST : process.env.MYSQL_USER;
+const dbPwd = isTestEnvironment ? process.env.MYSQL_PASSWORD_TEST : process.env.MYSQL_PASSWORD;
+const dbHost = isTestEnvironment ? process.env.MYSQL_HOST_TEST : process.env.MYSQL_HOST;
 
 const sequelize = new Sequelize(dbName as string, dbUser as string, dbPwd, {
     host: dbHost,
