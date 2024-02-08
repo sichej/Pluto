@@ -82,6 +82,25 @@ describe('expense', () => {
         expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
     });
 
+    test('get user expenses', async () => {
+        
+        const response = await request(app)
+            .post('/api/expense/getexpenses')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send();
+
+        expect(response.status).toBe(HTTP_Codes.OK);
+    });
+
+    test('get user expenses - no login', async () => {
+        
+        const response = await request(app)
+            .post('/api/expense/getexpenses')
+            .send();
+
+        expect(response.status).toBe(HTTP_Codes.UNAUTHORIZED);
+    });
+
     afterAll(async () => {
         sequelize.close();
         closeServer();
