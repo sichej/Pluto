@@ -1,4 +1,6 @@
+import { Op } from 'sequelize';
 import Expense from '../../models/expense/expense.model';
+import UserExpense from '../../models/expense/userExpense.model';
 
 class ExpenseService {
     static async createExpense(value: number, date: string): Promise<Expense> {
@@ -13,6 +15,18 @@ class ExpenseService {
     static async getAllExpenses(): Promise<Expense[]> {
         try {
             const expenses = await Expense.findAll();
+            return expenses;
+        } catch (error) {
+            throw new Error(`Failed to retrieve expenses: ${error.message}`);
+        }
+    }
+
+    static async getAllExpensesByUser(userExpenses: UserExpense[]): Promise<Expense[]> {
+        try {
+            const idExpenses = userExpenses.map(userExpense => userExpense.idExpense);
+            const expenses = await Expense.findAll({ where: {
+                id: { [Op.in]: idExpenses }
+            } });
             return expenses;
         } catch (error) {
             throw new Error(`Failed to retrieve expenses: ${error.message}`);

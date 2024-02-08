@@ -3,6 +3,7 @@ import { HTTP_Codes } from '../../repository/httpCodes';
 import ExpenseService from '../../services/expense/expense.services';
 import ExpenseDetailService from '../../services/expense/expenseDetail.service';
 import UserExpenseService from '../../services/expense/userExpense.service';
+import ExpenseCacheService from '../../services/expense/expenseCache.service';
 
 export const createExpense = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -29,6 +30,24 @@ export const createExpense = async (req: Request, res: Response): Promise<void> 
             return;
         }
         res.status(HTTP_Codes.OK).send('Expense added succesfully');
+    } catch (error) {
+        res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
+    }
+};
+
+export const getAllExpenses = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userExpenses = await UserExpenseService.getExpensesByUser((req as any).user.data);
+        if (!userExpenses.length) {
+            res.status(HTTP_Codes.OK).send([]);
+            return;
+        }
+        const expenses = await ExpenseService.getAllExpensesByUser(userExpenses);
+        if (!expenses.length) {
+            res.status(HTTP_Codes.OK).send([]);
+            return;
+        }
+        res.status(HTTP_Codes.OK).send(expenses);
     } catch (error) {
         res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
