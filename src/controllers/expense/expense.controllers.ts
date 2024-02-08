@@ -3,7 +3,6 @@ import { HTTP_Codes } from '../../repository/httpCodes';
 import ExpenseService from '../../services/expense/expense.services';
 import ExpenseDetailService from '../../services/expense/expenseDetail.service';
 import UserExpenseService from '../../services/expense/userExpense.service';
-import ExpenseCacheService from '../../services/expense/expenseCache.service';
 
 export const createExpense = async (req: Request, res: Response): Promise<void> => {
     try {
