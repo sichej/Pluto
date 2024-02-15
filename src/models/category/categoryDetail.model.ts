@@ -4,7 +4,9 @@ import Category from './category.model';
 
 class CategoryDetail extends Category {
     public id!: number;
-    public name!: string;
+    public idCategory!: number;
+    public details!: string;
+    public additionalDetails!: string;
 }
 
 CategoryDetail.init({
