@@ -31,6 +31,16 @@ INSERT INTO `Categories` (`id`, `name`) VALUES
 (15, 'Investments');
 
 
+CREATE TABLE `CategoryIncomes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `CategoryIncomes` (`id`, `name`) VALUES
+(1, 'Salary'),
+(2, 'Gift');
+
+
 CREATE TABLE `CategoryDetails` (
   `id` int(11) NOT NULL,
   `idCategory` int(11) NOT NULL,
@@ -49,6 +59,16 @@ INSERT INTO `CategoryDetails` (`id`, `idCategory`, `details`, `additionalDetails
 (9, 7, 'Lodging', 'Expenses for accommodation during travel, including hotel stays, vacation rentals, hostels, or camping site fees.'),
 (10, 7, 'Sightseeing and Entertainment', 'Costs related to tourist attractions, museum tickets, tours, excursions, events, or other leisure activities while traveling.'),
 (11, 7, 'Travel Insurance', NULL);
+
+
+CREATE TABLE `Incomes` (
+  `id` int(11) NOT NULL,
+  `value` float NOT NULL,
+  `date` varchar(10) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `idCategory` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE `ExpenseDetails` (
@@ -110,6 +130,14 @@ INSERT INTO `Users` (`email`, `name`, `password`) VALUES
 ALTER TABLE `Categories`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `CategoryIncomes`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `Incomes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userIncome` (`email`),
+  ADD KEY `categoryIncome` (`idCategory`);
+
 
 ALTER TABLE `CategoryDetails`
   ADD PRIMARY KEY (`id`),
@@ -152,6 +180,13 @@ ALTER TABLE `Categories`
 ALTER TABLE `CategoryDetails`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
+ALTER TABLE `CategoryIncomes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+
+ALTER TABLE `Incomes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 
 ALTER TABLE `ExpenseDetails`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
@@ -186,4 +221,8 @@ ALTER TABLE `Reports`
 ALTER TABLE `UserExpenses`
   ADD CONSTRAINT `expense-user` FOREIGN KEY (`idExpense`) REFERENCES `Expenses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user-expense` FOREIGN KEY (`userEmail`) REFERENCES `Users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `Incomes`
+  ADD CONSTRAINT `categoryIncome` FOREIGN KEY (`idCategory`) REFERENCES `CategoryIncomes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userIncome` FOREIGN KEY (`email`) REFERENCES `Users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
