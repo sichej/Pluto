@@ -19,6 +19,18 @@ describe('category', () => {
             .send();
 
         expect(response.status).toBe(HTTP_Codes.OK);
+        expect(JSON.parse(response.text).length).toBeGreaterThan(0)
+    });
+
+    test('get all categories income', async () => {
+
+        const response = await request(app)
+            .get('/api/category/getallcategoryincome')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send();
+
+        expect(response.status).toBe(HTTP_Codes.OK);
+        expect(JSON.parse(response.text).length).toBeGreaterThan(0)
     });
 
     test('get category by id', async () => {
