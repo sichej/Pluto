@@ -9,7 +9,7 @@ export async function newIncomeMiddleware(req: Request, res: Response, next: Nex
     if (!req.body.date || typeof req.body.date !== 'string' || req.body.date.length !== 10) {
         return res.status(HTTP_Codes.BAD_REQUEST).send(ERROR.BODY_ERROR)
     }
-    if (req.body.name || typeof req.body.name !== 'string') {
+    if (!req.body.name || typeof req.body.name !== 'string') {
         return res.status(HTTP_Codes.BAD_REQUEST).send(ERROR.BODY_ERROR)
     }
     if (!req.body.idCategory || typeof req.body.idCategory !== 'number') {
