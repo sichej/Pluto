@@ -50,6 +50,7 @@ describe('income', () => {
             .send();
 
         expect(response.status).toBe(HTTP_Codes.OK);
+        expect(JSON.parse(response.text).length).toBeGreaterThan(0)
     });
 
     afterAll(async () => {
