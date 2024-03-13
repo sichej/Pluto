@@ -122,6 +122,28 @@ CREATE TABLE `Users` (
   `password` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `CategoryIcons` (
+  `iconString` varchar(25) NOT NULL,
+  `idCategory` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `CategoryIcons` (`iconString`, `idCategory`) VALUES
+('barbell', 2),
+('pizza', 1),
+('car-sport', 3),
+('shirt', 4),
+('medkit', 5),
+('book', 6),
+('airplane', 7),
+('gift', 8),
+('accessibility', 9),
+('phone-portrait', 10),
+('caret-forward-circle', 11),
+('paw', 12),
+('people', 13),
+('book', 14),
+('analytics', 15);
+
 
 INSERT INTO `Users` (`email`, `name`, `password`) VALUES
 ('test@pluto.com', 'Test', 'a4abd4448c49562d828115d13a1fccea927f52b4d5459297f8b43e42da89238bc13626e43dcb38ddb082488927ec904fb42057443983e88585179d50551afe62');
@@ -167,6 +189,9 @@ ALTER TABLE `ReportTypes`
 ALTER TABLE `UserExpenses`
   ADD KEY `user-expense` (`userEmail`),
   ADD KEY `expense-user` (`idExpense`);
+
+ALTER TABLE `CategoryIcons`
+  ADD KEY `icon-category` (`idCategory`);
 
 
 ALTER TABLE `Users`
@@ -225,4 +250,7 @@ ALTER TABLE `UserExpenses`
 ALTER TABLE `Incomes`
   ADD CONSTRAINT `categoryIncome` FOREIGN KEY (`idCategory`) REFERENCES `CategoryIncomes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `userIncome` FOREIGN KEY (`email`) REFERENCES `Users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `CategoryIcons`
+  ADD CONSTRAINT `icon-category` FOREIGN KEY (`idCategory`) REFERENCES `Categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
