@@ -82,6 +82,16 @@ describe('expense', () => {
         expect(response.status).toBe(HTTP_Codes.BAD_REQUEST);
     });
 
+    test('get user expenses details', async () => {
+        
+        const response = await request(app)
+            .get('/api/expense/getexpensesdetails')
+            .set('Authorization', `Bearer ${authToken}`)
+            .send();
+
+        expect(response.status).toBe(HTTP_Codes.OK);
+    });
+
     test('get user expenses', async () => {
         
         const response = await request(app)

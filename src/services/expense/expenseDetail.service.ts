@@ -1,4 +1,7 @@
+import { Op } from "sequelize";
 import ExpenseDetail from "../../models/expense/expenseDetail.model";
+import Expense from "../../models/expense/expense.model";
+import UserExpense from "../../models/expense/userExpense.model";
 
 class ExpenseDetailService {
 
@@ -11,9 +14,24 @@ class ExpenseDetailService {
         }
     }
 
-    static async getCategoryDetailsByIdExpense(idExpense: number): Promise<ExpenseDetail[] | null> {
+    static async getExpenseDetailsByIdExpense(idExpense: number): Promise<ExpenseDetail[] | null> {
         try {
             const expenseDetails = await ExpenseDetail.findAll({ where: {idExpense} });
+            if (!expenseDetails.length) {
+                return null;
+            }
+            return expenseDetails;
+        } catch (error) {
+            throw new Error(`Failed to retrieve expense details: ${error.message}`);
+        }
+    }
+
+    static async getUserExpenseDetails(userExpenses: UserExpense[]): Promise<ExpenseDetail[] | null> {
+        try {
+            const idExpenses = userExpenses.map(userExpense => userExpense.idExpense);
+            const expenseDetails = await ExpenseDetail.findAll({ where: {
+                idExpense: { [Op.in]: idExpenses }
+            } });
             if (!expenseDetails.length) {
                 return null;
             }

@@ -7,7 +7,7 @@ class ExpenseDetail extends Model {
     public name!: string;
     public details!: string;
     public idCategory!: number;
-    public idCategoyDetail!: number;
+    public idCategoryDetail!: number;
 }
 
 ExpenseDetail.init({
@@ -33,7 +33,7 @@ ExpenseDetail.init({
         type: DataTypes.NUMBER,
         allowNull: false
     },
-    idCategoyDetail: {
+    idCategoryDetail: {
         type: DataTypes.NUMBER,
         allowNull: true
     }

@@ -51,3 +51,21 @@ export const getAllExpenses = async (req: Request, res: Response): Promise<void>
         res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
     }
 };
+
+export const getAllExpensesDetails = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userExpenses = await UserExpenseService.getExpensesByUser((req as any).user.data);
+        if (!userExpenses.length) {
+            res.status(HTTP_Codes.OK).send([]);
+            return;
+        }
+        const expenses = await ExpenseDetailService.getUserExpenseDetails(userExpenses);
+        if (!expenses.length) {
+            res.status(HTTP_Codes.OK).send([]);
+            return;
+        }
+        res.status(HTTP_Codes.OK).send(expenses);
+    } catch (error) {
+        res.status(HTTP_Codes.INTERNAL_SERVER_ERROR).send({ error: error.message });
+    }
+};
